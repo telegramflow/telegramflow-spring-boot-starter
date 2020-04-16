@@ -48,6 +48,11 @@ public class LayoutLoader {
         if (messageElement == null) {
             throw new RuntimeException("Screen must contain Message element: " + screenInfo.getId());
         }
+
+        String formatValue = messageElement.attributeValue("format");
+        if (formatValue != null) {
+            layout.getMessage().setFormat(Message.Format.valueOf(formatValue));
+        }
         layout.getMessage().setText(messageElement.getText());
 
         // TODO set text format MARKDOWN and so on
