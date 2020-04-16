@@ -4,6 +4,8 @@ import com.telegramflow.components.*;
 import com.telegramflow.security.Authentication;
 import com.telegramflow.security.User;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.ActionType;
+import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -14,7 +16,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service(TelegramService.NAME)
@@ -27,6 +28,17 @@ public class TelegramService {
 
     @Inject
     protected TelegramBot telegramBot;
+
+    public void sendChatAction(ActionType actionType) {
+        User user = authentication.getSessionNN().getUser();
+        try {
+            telegramBot.execute(new SendChatAction()
+                    .setChatId(String.valueOf(user.getId()))
+                    .setAction(actionType));
+        } catch (TelegramApiException e) {
+            throw new IllegalStateException("An error occurred while sending telegram message", e);
+        }
+    }
 
     public void sendMessage(String text) {
         User user = authentication.getSessionNN().getUser();

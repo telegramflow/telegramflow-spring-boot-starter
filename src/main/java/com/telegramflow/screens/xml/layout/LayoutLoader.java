@@ -63,13 +63,20 @@ public class LayoutLoader {
             return;
         }
 
-        Boolean removeKeyboard = Boolean.valueOf(keyboardElement
-                .attributeValue("removeKeyboard"));
-        layout.getKeyboard().setRemoveKeyboard(removeKeyboard);
+        String removeKeyboardValue = keyboardElement.attributeValue("removeKeyboard");
+        if (removeKeyboardValue != null) {
+            layout.getKeyboard().setRemoveKeyboard(Boolean.valueOf(removeKeyboardValue));
+        }
 
-        Boolean oneTimeKeyboard = Boolean.valueOf(keyboardElement
-                .attributeValue("oneTimeKeyboard"));
-        layout.getKeyboard().setOneTimeKeyboard(oneTimeKeyboard);
+        String oneTimeKeyboardValue = keyboardElement.attributeValue("oneTimeKeyboard");
+        if (oneTimeKeyboardValue != null) {
+            layout.getKeyboard().setOneTimeKeyboard(Boolean.valueOf(oneTimeKeyboardValue));
+        }
+
+        String resizeKeyboardValue = keyboardElement.attributeValue("resizeKeyboard");
+        if (resizeKeyboardValue != null) {
+            layout.getKeyboard().setResizeKeyboard(Boolean.valueOf(resizeKeyboardValue));
+        }
 
         String columnsValue = keyboardElement.attributeValue("columns");
         Integer columns = columnsValue != null ? Integer.valueOf(columnsValue) : null;

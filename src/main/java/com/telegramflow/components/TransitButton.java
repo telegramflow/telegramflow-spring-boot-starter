@@ -9,6 +9,11 @@ public class TransitButton extends AbstractButton {
 
     private String transitTo;
 
+    public TransitButton(Layout layout, String caption, String transitTo) {
+        super(layout, null, caption);
+        this.transitTo = transitTo;
+    }
+
     public TransitButton(Layout layout, String id, String caption, String transitTo) {
         super(layout, id, caption);
         this.transitTo = transitTo;

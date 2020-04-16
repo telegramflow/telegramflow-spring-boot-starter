@@ -9,7 +9,7 @@ public class Keyboard {
 
     private Boolean oneTimeKeyboard;
 
-    private Boolean resizeKeyboard;
+    private Boolean resizeKeyboard = true;
 
     private Integer columns;
 
