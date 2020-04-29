@@ -98,7 +98,7 @@ public class SharePhoneAuthentication implements Authentication {
             sessionProvider.save(session);
         }
 
-        if (session.getAuthState() == AuthState.UNAUTHORIZED) {
+        if (session.getAuthState() == AuthState.UNAUTHORIZED || user.getRole() == null) {
             session.setAuthState(AuthState.AUTHORIZATION);
             sessionProvider.save(session);
             sendAuthorizationRequest(user);
