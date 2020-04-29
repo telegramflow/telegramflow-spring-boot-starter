@@ -98,7 +98,7 @@ public class SharePhoneAuthentication implements Authentication {
             sessionProvider.save(session);
         }
 
-        if (session.getAuthState() == AuthState.UNAUTHORIZED || user.getRole() == null) {
+        if (session.getAuthState() == AuthState.UNAUTHORIZED) {
             session.setAuthState(AuthState.AUTHORIZATION);
             sessionProvider.save(session);
             sendAuthorizationRequest(user);
@@ -106,7 +106,7 @@ public class SharePhoneAuthentication implements Authentication {
                     user.getUsername()));
         }
 
-        if (session.getAuthState() == AuthState.AUTHORIZATION) {
+        if (session.getAuthState() == AuthState.AUTHORIZATION || user.getRole() == null) {
             Contact contact = TelegramUtil.extractContact(update);
 
             if (contact == null) {
