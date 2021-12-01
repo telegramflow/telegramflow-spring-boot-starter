@@ -2,9 +2,9 @@ package com.telegramflow.security;
 
 public interface User {
 
-    Integer getId();
+    Long getId();
 
-    void setId(Integer id);
+    void setId(Long id);
 
     String getUsername();
 
