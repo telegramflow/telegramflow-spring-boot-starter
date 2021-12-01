@@ -9,12 +9,12 @@ sourceCompatibility = '1.8'
 apply plugin: 'maven'
 
 repositories {
-    jcenter()
     mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
-    api 'org.telegram:telegrambots:4.7'
+    api 'org.telegram:telegrambots:5.4.0.1'
     implementation 'org.springframework.boot:spring-boot-starter:2.2.6.RELEASE'
     implementation 'org.dom4j:dom4j:2.1.1'
     implementation 'org.apache.commons:commons-lang3:3.10'

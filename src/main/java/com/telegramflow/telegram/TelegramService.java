@@ -32,9 +32,10 @@ public class TelegramService {
     public void sendChatAction(ActionType actionType) {
         User user = authentication.getSessionNN().getUser();
         try {
-            telegramBot.execute(new SendChatAction()
-                    .setChatId(String.valueOf(user.getId()))
-                    .setAction(actionType));
+            telegramBot.execute(SendChatAction.builder()
+                    .chatId(String.valueOf(user.getId()))
+                    .action(actionType.toString())
+                    .build());
         } catch (TelegramApiException e) {
             throw new IllegalStateException("An error occurred while sending telegram message", e);
         }
@@ -43,9 +44,10 @@ public class TelegramService {
     public void sendMessage(String text) {
         User user = authentication.getSessionNN().getUser();
         try {
-            telegramBot.execute(new SendMessage()
-                    .setChatId(String.valueOf(user.getId()))
-                    .setText(text));
+            telegramBot.execute(SendMessage.builder()
+                    .chatId(String.valueOf(user.getId()))
+                    .text(text)
+                    .build());
         } catch (TelegramApiException e) {
             throw new IllegalStateException("An error occurred while sending telegram message", e);
         }
@@ -58,11 +60,12 @@ public class TelegramService {
         Keyboard keyboard = layout.getKeyboard();
 
         try {
-            telegramBot.execute(new SendMessage()
-                    .setChatId(String.valueOf(user.getId()))
-                    .setText(message.getText())
-                    .setParseMode(message.getFormat() != null ? message.getFormat().name() : null)
-                    .setReplyMarkup(createKeyboard(keyboard)));
+            telegramBot.execute(SendMessage.builder()
+                    .chatId(String.valueOf(user.getId()))
+                    .text(message.getText())
+                    .parseMode(message.getFormat() != null ? message.getFormat().name() : null)
+                    .replyMarkup(createKeyboard(keyboard))
+                    .build());
         } catch (TelegramApiException e) {
             throw new IllegalStateException("An error occurred while sending telegram message", e);
         }

@@ -3,7 +3,8 @@ package com.telegramflow.telegram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
 import org.telegram.telegrambots.meta.generics.WebhookBot;
 
@@ -17,10 +18,10 @@ public class TelegramBotsManager {
         this.telegramBotsApi = telegramBotsApi;
     }
 
-    public void register(UpdateReceiver updateReceiver) throws TelegramApiRequestException {
+    public void register(UpdateReceiver updateReceiver) throws TelegramApiException {
         if (updateReceiver instanceof WebhookBot) {
             WebhookBot webhookBot = (WebhookBot) updateReceiver;
-            telegramBotsApi.registerBot(webhookBot);
+            telegramBotsApi.registerBot(webhookBot, SetWebhook.builder().build());
             logger.info("Registered webhook bot '{}'", webhookBot.getBotUsername());
         } else if (updateReceiver instanceof LongPollingBot) {
             LongPollingBot longPollingBot = (LongPollingBot) updateReceiver;

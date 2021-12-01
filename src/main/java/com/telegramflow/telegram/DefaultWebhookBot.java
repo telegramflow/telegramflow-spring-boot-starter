@@ -83,9 +83,12 @@ public class DefaultWebhookBot extends TelegramWebhookBot implements UpdateRecei
         }
     }
 
-    public void sendMessage(Integer userId, String text) {
+    public void sendMessage(Long userId, String text) {
         try {
-            execute(new SendMessage().setChatId((long)userId).setText(text));
+            execute(SendMessage.builder()
+                    .chatId(String.valueOf(userId))
+                    .text(text)
+                    .build());
         } catch (TelegramApiException e) {
             logger.error("An error occurred while sending message to telegram");
         }

@@ -38,10 +38,11 @@ public class SharePhoneAuthentication implements Authentication {
 
     protected Consumer<User> afterAuthorized = (user) -> {
         try {
-            telegramBot.execute(new SendMessage()
-                    .setChatId((long)user.getId())
-                    .setText(messages.getMessage("authentication.authorizedMessage"))
-                    .setReplyMarkup(new ReplyKeyboardRemove()));
+            telegramBot.execute(SendMessage.builder()
+                    .chatId(String.valueOf(user.getId()))
+                    .text(messages.getMessage("authentication.authorizedMessage"))
+                    .replyMarkup(new ReplyKeyboardRemove())
+                    .build());
         } catch (TelegramApiException e) {
             logger.error(String.format("An error occurred while sending authorized message to user %s",
                     user.getUsername()), e);
@@ -50,10 +51,11 @@ public class SharePhoneAuthentication implements Authentication {
 
     protected Consumer<User> afterRestricted = (user) -> {
         try {
-            telegramBot.execute(new SendMessage()
-                    .setChatId((long)user.getId())
-                    .setText(messages.getMessage("authentication.restrictedMessage"))
-                    .setReplyMarkup(new ReplyKeyboardRemove()));
+            telegramBot.execute(SendMessage.builder()
+                    .chatId(String.valueOf(user.getId()))
+                    .text(messages.getMessage("authentication.restrictedMessage"))
+                    .replyMarkup(new ReplyKeyboardRemove())
+                    .build());
         } catch (TelegramApiException e) {
             logger.error(String.format("An error occurred while sending restricted message to user %s",
                     user.getUsername()), e);
@@ -115,7 +117,7 @@ public class SharePhoneAuthentication implements Authentication {
                         user.getUsername()));
             }
 
-            if (!user.getId().equals(contact.getUserID())) {
+            if (!user.getId().equals(contact.getUserId())) {
                 sendAuthorizationRequest(user);
                 throw new AuthenticationException(String.format("Contact %s doesn't belong to user %s",
                         contact.getPhoneNumber(), user.getUsername()));
@@ -174,16 +176,19 @@ public class SharePhoneAuthentication implements Authentication {
         Objects.requireNonNull(user, "user is null");
 
         KeyboardRow keyboardRow = new KeyboardRow();
-        keyboardRow.add(new KeyboardButton()
-                .setRequestContact(true)
-                .setText(messages.getMessage("authentication.authorizeButton")));
+        keyboardRow.add(KeyboardButton.builder()
+                .requestContact(true)
+                .text(messages.getMessage("authentication.authorizeButton"))
+                .build());
         try {
-            telegramBot.execute(new SendMessage()
-                    .setChatId((long)user.getId())
-                    .setText(messages.getMessage("authentication.authorizeMessage"))
-                    .setReplyMarkup(new ReplyKeyboardMarkup()
-                            .setResizeKeyboard(true)
-                            .setKeyboard(Collections.singletonList(keyboardRow))));
+            telegramBot.execute(SendMessage.builder()
+                    .chatId(String.valueOf(user.getId()))
+                    .text(messages.getMessage("authentication.authorizeMessage"))
+                    .replyMarkup(ReplyKeyboardMarkup.builder()
+                            .resizeKeyboard(true)
+                            .keyboard(Collections.singletonList(keyboardRow))
+                            .build())
+                    .build());
         } catch (TelegramApiException e) {
             logger.error(String.format("An error occurred while sending authorization request to user %s",
                     user.getUsername()), e);
